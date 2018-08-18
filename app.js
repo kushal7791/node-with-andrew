@@ -1,3 +1,5 @@
+//console.log('Starting App.js');
+
 // const os = require('os');
 
 // console.log(_.isString(true));
@@ -18,21 +20,52 @@
 
 //console.log('Result :', notes.add(9, -2));
 
-console.log('Starting App.js');
-
 const fs = require('fs');
 const _ = require('lodash');
+const yargs = require('yargs');
 
 const notes = require('./notes');
 
-var command = process.argv[2];
-console.log('Command :', command);
-console.log(process.argv);
+var argv = yargs
+    .command('add', 'Add a new note......', {
+        title: {
+            describe: 'Title of note the note is must !',
+            demand: true,//validation like title is necessary
+            alias: 't'
+        },
+        body: {
+            describe: 'Body of the note is must !',
+            demand: true,
+            alias: 'b'
+        }
+    })
+    .help()
+    .argv;
+//var command = process.argv[2];
+var command = argv._[0];
+//console.log('Command :', command);
+//console.log('Process :', process.argv);
+//console.log('Yargs :', argv);
 
 if(command === 'add') {
-    console.log('adding new note');
+    var note = notes.addNote(argv.title, argv.body);
+    //if else called so return will be undefined.
+    notes.logNote(note);
 } else if(command === 'list') {
-    console.log('Listing all note');
+    var allNotes = notes.getAll();//notes file k andar se export kia hua getall function call kro
+    console.log(`Printing ${allNotes.length} note(s)....`);
+    allNotes.forEach(note => {
+        notes.logNote(note);
+    });
+} else if(command === 'read') {
+    var note = notes.getNote(argv.title);
+    notes.logNote(note);
+} else if(command === 'remove') {
+    var noteRemoved = notes.removeNote(argv.title);//if length not equal so return true means removed.
+    var message = noteRemoved ? 'note was removed.' : 'Note note found';
+    console.log(message);
 } else {
     console.log('Nothing to display');
 }
+
+//console.log('File Executed : ', argv.$0);
