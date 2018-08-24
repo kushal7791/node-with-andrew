@@ -26,18 +26,29 @@ const yargs = require('yargs');
 
 const notes = require('./notes');
 
+const titleOption = {
+    describe: 'Title of note the note is must !',
+    demand: true,//validation like title is necessary
+    alias: 't'
+};
+
+const bodyOption = {
+    describe: 'Body of the note is must !',
+    demand: true,
+    alias: 'b'
+};
+
 var argv = yargs
     .command('add', 'Add a new note......', {
-        title: {
-            describe: 'Title of note the note is must !',
-            demand: true,//validation like title is necessary
-            alias: 't'
-        },
-        body: {
-            describe: 'Body of the note is must !',
-            demand: true,
-            alias: 'b'
-        }
+        title: titleOption,
+        body: bodyOption
+    })
+    .command('list', 'List all notes......')
+    .command('read', 'Read a note........', {
+        title: titleOption
+    })
+    .command('remove', 'Remove a note....', {
+        title: titleOption
     })
     .help()
     .argv;
