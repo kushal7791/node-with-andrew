@@ -4,12 +4,12 @@ var getUser = (id, callback) => {
         name: 'Kushal'
     };
     
-    console.log(`Before : ${Date.now()}`);
+    console.log(`before : ${Date.now()}`);
     
     callback(user);
     
     setTimeout(() => {
-        console.log(`After : ${Date.now()}`);
+        console.log(`after : ${Date.now()}`);
     }, 2000);
 };
 
